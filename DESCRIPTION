@@ -9,4 +9,16 @@ Description: This repository contains talk and workshop material for
    2016.
 License: Artistic-2.0
 VignetteBuilder: knitr
-Suggests: knitr, BiocStyle
+Suggests: knitr, BiocStyle,
+    ggplot2,
+    Biostrings,
+    GenomicRanges,
+    SummarizedExperiment,
+    DESeq2,
+    VariantFiltering,
+    TxDb.Hsapiens.UCSC.hg38.knownGene,
+    TxDb.Hsapiens.UCSC.hg19.knownGene,
+    BSgenome.Hsapiens.UCSC.hg38,
+    org.Hs.eg.db,
+    airway,
+    RNAseqData.HNRNPC.bam.chr14
