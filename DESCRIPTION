@@ -1,0 +1,12 @@
+Package: Brisbane2016
+Title: Bioconductor Asia Workshop and Talk.
+Version: 0.1.0
+Authors@R: person("Martin", "Morgan",
+    email = "Martin.Morgan@RoswellPark.org",
+    role = c("aut", "cre"))
+Description: This repository contains talk and workshop material for
+   the Bioc Asia Developer Conference in Brisbane, November 3 and 4,
+   2016.
+License: Artistic-2.0
+VignetteBuilder: knitr
+Suggests: knitr, BiocStyle

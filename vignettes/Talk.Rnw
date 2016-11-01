@@ -1,0 +1,135 @@
+%\VignetteIndexEntry{Bioconductor LaTeX Style}
+%\VignettePackage{BiocStyle}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass{beamer}
+
+\usetheme{Boadilla}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right,rightskip=1em]{section in head/foot}%
+    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,left,leftskip=1em]{subsection in head/foot}%
+    \usebeamerfont{section in head/foot}\insertsectionhead\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\newcommand{\software}[1]{\textsl{#1}}
+\newcommand\R{\software{R}}
+%
+\newcommand\Bioconductor{\software{Bioconductor}}
+\newcommand{\Rpackage}[1]{\textsl{#1}}
+\newcommand\Biocpkg[1]{%
+  {\href{http://bioconductor.org/packages/#1}%
+    {\Rpackage{#1}}}}
+\newcommand\CRANpkg[1]{%
+  {\href{http://cran.fhcrc.org/web/packages/#1/index.html}%
+    {\Rpackage{#1}}}}
+\newcommand{\Rcode}[1]{\texttt{#1}}
+\newcommand{\Rfunction}[1]{\Rcode{#1}}
+\newcommand{\Robject}[1]{\Rcode{#1}}
+\newcommand{\Rclass}[1]{\textit{#1}}
+
+\title{The \Bioconductor{} Project: Current Status}
+\author{Martin Morgan}
+\institute[RPCI]{
+  Roswell Park Cancer Institute\\
+  Buffalo, NY, USA\\
+  \href{mailto:martin.morgan@roswellpark.org}{martin.morgan@roswellpark.org}}
+\date{4 November 2016}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}{\Bioconductor{}}
+\end{frame}
+
+\begin{frame}{Today's objectives}
+\end{frame}
+
+\section{State of the project}
+
+\begin{frame}{State of the project}
+  \begin{itemize}
+  \item Packages
+  \item Users
+  \item Web \& support sites
+  \item Release \& devel builders
+  \item Funding
+  \end{itemize}
+\end{frame}
+
+\section{Recent developments}
+
+\begin{frame}{Recent developments}
+  \begin{itemize}
+  \item New package reviews
+  \item Large data representation: \Biocpkg{HDF5Array}
+  \item \Biocpkg{ExperimentHub} and \Biocpkg{AnnotationHub}
+  \end{itemize}
+\end{frame}
+
+\section{Programming best practices}
+
+\begin{frame}{Programming best practices}
+  \begin{columns}
+
+    \column{.5\textwidth}
+    \begin{itemize}
+    \item Reuse \& interoperability
+    \item Correct, robust, efficient (vectorized) code;
+      \Biocpkg{BiocParallel}
+    \item Documentation: classic or \CRANpkg{roxygen2}
+    \item Testing: \CRANpkg{RUnit} or \CRANpkg{testthat}
+    \item Rich or tidy?
+    \end{itemize}
+
+    \column{.5\textwidth}
+
+  \end{columns}
+\end{frame}
+
+\section{Future challenges}
+
+\begin{frame}{Future challenges}
+  \begin{itemize}
+  \item Data size, access
+  \item Git
+  \item Cloud
+  \end{itemize}
+\end{frame}
+
+\section{Acknowledgments}
+
+\begin{frame}{Acknowledgments}
+  Core team (current \& recent): Yubo Cheng, Valerie Obenchain, Herv\'e
+  Pag\`es, Marcel Ramos, Lori Shepherd, Dan Tenenbaum, Greg Wargula.
+  \medskip\par
+  Technical advisory board: Vincent Carey, Kasper Hansen, Wolfgang
+  Huber, Robert Gentleman, Rafael Irizzary, Levi Waldron, Michael
+  Lawrence, Sean Davis, Aedin Culhane
+  \medskip\par
+  Scientific advisory board: Simon Tavare (CRUK), Paul Flicek
+  (EMBL/EBI), Simon Urbanek (AT\&T), Vincent Carey (Brigham \&
+  Women's), Wolfgang Huber (EBI), Rafael Irizzary (Dana Farber),
+  Robert Gentleman (23andMe)
+  \medskip\par
+  Research reported in this presentation was supported by the National
+  Human Genome Research Institute and the National Cancer Institute of
+  the National Institutes of Health under award numbers U41HG004059
+  and U24CA180996. The content is solely the responsibility of the
+  authors and does not necessarily represent the official views of the
+  National Institutes of Health.
+\end{frame}
+
+\end{document}
