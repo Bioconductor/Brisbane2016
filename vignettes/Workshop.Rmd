@@ -195,9 +195,15 @@ interest (genes) in each sample. We focus on a subset of the
 experiment, with 4 cell lines each treated with dexamethasone or a
 control.
 
+More extensive work flows are available for use of
+[DESeq2][DESeq2 workflow] and [edgeR / limma voom][].
+
+[DESeq2 workflow]: http://bioconductor.org/help/workflows/rnaseqGene/
+[edgeR / limma voom]: http://bioconductor.org/help/workflows/RNAseq123
+
 [airway]: https://bioconductor.org/packages/airway
-[24926665]: (http://www.ncbi.nlm.nih.gov/pubmed/24926665)
-[GSE52778]: (http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778)
+[24926665]: http://www.ncbi.nlm.nih.gov/pubmed/24926665
+[GSE52778]: http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778
 
 ## Setup (not necessary during the workshop)
 
@@ -218,7 +224,7 @@ We use two data files in the analysis. The data files are in the
 [Brisbane2016][1] github repository. Install the github repository with
 
 ```{r Brisbane2016, eval=FALSE}
-biocLite("Bioconductor/Syndey2016")
+biocLite("Bioconductor/Brisbane2016")
 ```
 
 Once the package is installed, the location of the files (to be used
@@ -311,7 +317,11 @@ assay <- read.table(assayFile)
 head(assay)
 ```
 
-## Exploration
+**NOTE** Most modern work flows will start with data generated from
+  [kallisto][], [salmon][], etc.; see the [tximport][] package and
+  vignette for importing data from these software tools into _R_.
+
+[tximport]: https://bioconductor.org/packages/tximport
 
 Calculate the 'library size' (total number of mapped reads) of each
 sample using `colSums()`
@@ -321,7 +331,7 @@ colSums(assay)
 ```
 
 Create a density plot of the average asinh-transformed (asinh is
-log-like, expect near zero) read counts of each gene using the
+log-like, except near zero) read counts of each gene using the
 following series of commands.
 
 ```{r}
@@ -400,6 +410,28 @@ result
 ridx <- head(order(result$padj), 10)
 top = result[ridx,]
 top
+```
+
+Two common ways of visualizing results are as "MA" plots that
+summarize the relationship between count and statistical sigificance
+
+```{r}
+plotMA(result)
+```
+
+and volcano plots where the X-axis corresponds to 'biology' (size of
+change) and Y-axis to 'statistics' (significance of observed change).
+
+```{r}
+plot(-log10(pvalue) ~ log2FoldChange, result)
+```
+
+A fun sanity check is the histogram of raw P-values, which should be
+uniform under the null; deviations often suggest batch effects or
+other artifacts that should be addressed in upstream analysis.
+
+```{r}
+hist(result$pvalue)
 ```
 
 # Annotation and variant annotation
