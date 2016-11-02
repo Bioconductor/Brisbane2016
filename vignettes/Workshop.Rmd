@@ -34,38 +34,38 @@ suppressPackageStartupMessages({
 
 # Introduction to _R_ and _Bioconductor_
 
-## vectors, classes, methods, and packages
+## Vectors, classes, methods, and packages
 
 _R_
 
-- statistical
-- vectorized
+- Statistical
+- Vectorized
 
     ```{r vector-to-class}
     x <- rnorm(100)
     y <- x + rnorm(100)
     ```
 
-- large data _per se_ is not a problem
+- Large data _per se_ is not a problem
 
     ```{r large-data}
     system.time(rnorm(1e7))
     ```
 
-- classes structure data (nouns)
+- Classes structure data (nouns)
 
     ```{r data.frame}
     df <- data.frame(X=x, Y=y)
     fit <- lm(Y ~ X, df)
     ```
 
-- methods transform objects (verbs)
+- Methods transform objects (verbs)
 
     ```{r verbs}
     anova(fit)
     ```
 
-- introspection
+- _R_ provides introspection
 
     ```{r introspection}
     class(df)
@@ -76,7 +76,7 @@ _R_
 
 Packages
 
-- extend base functionality
+- Extend base functionality
 
     ```{r ggplot2}
     library(ggplot2)
@@ -85,7 +85,7 @@ Packages
         stat_smooth(method="lm")
     ```
 
-_Bioconductor_
+_Bioconductor_ -- key software and annotation resources
 
 - [GenomicRanges][]
 
@@ -136,6 +136,8 @@ _Bioconductor_
 
 - [SummarizedExperiment][]
 
+    ![](SummarizedExperiment.png)
+
     ```{r}
     library(SummarizedExperiment)
     library(airway)
@@ -148,6 +150,10 @@ _Bioconductor_
     airway[, airway$dex == "trt"]
     ```
 
+- The _Bioconductor_ sequencing ecosystem
+
+    ![](SequencingEcosystem.jpg)
+
 [GenomicRanges]: https://bioconductor.org/packages/GenomicRanges
 [Biostrings]: https://bioconductor.org/packages/Biostrings
 [SummarizedExperiment]: https://bioconductor.org/packages/SummarizedExperiment
@@ -155,6 +161,9 @@ _Bioconductor_
 ## Help!
 
 `?`
+
+- `?"findOverlaps<tab>"`
+- `?GenomicRanges::findOverlaps`
 
 biocViews and landing pages
 
@@ -224,17 +233,45 @@ system.file(package="Brisbane2016", "extdata")
 
 ## Sequence analysis work flows
 
-Overall
+Research question
 
-In and out of _R_
+- Designed experiment
+- Gene-level differential expression
+- RNA-seq data (http://bio.lundberg.gu.se/courses/vt13/rnaseq.html)
 
-## Data input
+    ![](rna4.jpg)
 
-The first challenge is to input the data. We start with the
-'phenotypic' data, describing the samples used in the experiment. The
-data is a simple table of 8 rows and several columns; it could be
-created in Excel and exported as a tab-delimited file. Find the
-location of the file on your Amazon machine instance
+Data processing steps
+
+- Quality assessment: FASTQ files; outside _R_
+- Alignment and summary to count table
+- Assessment of differential expression
+- Results placed in context, e.g., gene set enrichment
+
+Alignment & summary (traditional)
+
+- Full alignment to BAM files, summarizing gene or transcript
+  abundance, e.g., _Bowtie_ / _tophat_ / _cufflinks_; _RSEM_;
+  [Rsubread][]
+- Summarize to gene-level count tables or estimates of abundance
+- _Counts_ are important: information about statistical uncertainty of
+  estimate
+
+Alignment & summary (contemporary)
+
+- Approximate alignment directly to count tables of transcripts
+  or genes, e.g.,[kallisto][], [salmon][]
+
+[Rsubread]: https://bioconductor.org/packages/Rsubread
+[kallisto]: https://pachterlab.github.io/kallisto/
+[salmon]: http://salmon.readthedocs.io/en/latest/salmon.html
+
+## Exploring count tables
+
+We start with the 'phenotypic' data, describing the samples used in
+the experiment. The data is a simple table of 8 rows and several
+columns; it could be created in Excel and exported as a tab-delimited
+file. Find the location of the file on your Amazon machine instance
 
 ```{r, eval=FALSE}
 colDataFile <- file.chooose()    # find 'airway-colData.tab'
@@ -365,7 +402,9 @@ top = result[ridx,]
 top
 ```
 
-## Comprehension
+# Annotation and variant annotation
+
+## Simple annotation of statistical results
 
 There are many opportunities to place the statistical results into
 biological context. An initial step is to map the cryptic Ensembl gene
@@ -384,9 +423,39 @@ top$Symbol <- mapIds(org.Hs.eg.db, rownames(top), "SYMBOL", "ENSEMBL")
 top
 ```
 
+Sneak peak: 
+
+```{r eval=FALSE}
+biocLite("Bioconductor/Organism.dplyr")
+```
+
+```{r, message=FALSE}
+library(Organism.dplyr)
+```
+
+```{r}
+src <- src_ucsc("Homo sapiens")
+src
+tbl(src, "id")
+```
+
+```{r}
+ids <- head(rownames(top))
+tbl(src, "id") %>% filter(ensembl %in% ids) %>% 
+    select(ensembl, symbol, genename)
+```
+
+```{r}
+id <- "uc031rqc.3"  ## transcript with most exons 
+t1 <- tbl(src, "id") %>% select(entrez, symbol, genename)
+t2 <- tbl(src, "ranges_tx") %>% filter(tx_name == id)
+inner_join(t1, t2)
+inner_join(t1, t2) %>% collect %>% GRanges
+```
+
 [org.Hs.eg.db]: https://bioconductor.org/packages/org.Hs.eg.db
 
-# Annotation and variant annotation
+## Working with called variants
 
 ```{r input-variants}
 library(VariantAnnotation)
