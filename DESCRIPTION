@@ -1,6 +1,6 @@
 Package: Brisbane2016
 Title: Bioconductor Asia Workshop and Talk
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: person("Martin", "Morgan",
     email = "Martin.Morgan@RoswellPark.org",
     role = c("aut", "cre"))
